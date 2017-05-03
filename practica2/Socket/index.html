@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!--<link rel="stylesheet" type="text/css" href="js/bootstrap/bootstrap.css">--> 
+      	<link rel="stylesheet" href="css/style.css">
+	<!-- Tag <style> criada para alinhamento e padronização dos botões -->
+<script>
+function ajax_post(){
+    // Create our XMLHttpRequest object
+    var hr = new XMLHttpRequest();
+    // Create some variables we need to send to our PHP file
+    var url = "arduino.php";
+    //var url = "mensaje.php";
+    //alert(document.getElementById("id").value);	
+    var ln = document.getElementById("vl_led1").value;
+    var vars = "vl_led1="+ln;
+    hr.open("POST", url, true);
+    // Set content type header information for sending url encoded variables in the request
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // Access the onreadystatechange event for the XMLHttpRequest object
+    hr.onreadystatechange = function() {
+	    if(hr.readyState == 4 && hr.status == 200) {
+		    var return_data = hr.responseText;
+			document.getElementById("status").innerHTML = return_data;
+	    }
+    }
+    // Send the data to PHP now... and wait for response to update the status div
+    hr.send(vars); // Actually execute the request
+    document.getElementById("status").innerHTML = "processing...";
+}
+
+function foco_post(){
+    var hr = new XMLHttpRequest();
+    var url = "arduino.php";
+    var ln = "0" 
+    ln = document.getElementById("foco").checked;
+    if(ln == true){
+       int_ln = 1;}
+    else{ int_ln = 0;} 
+     
+    var vars = "foco="+int_ln;
+    hr.open("POST", url, true);
+    // Set content type header information for sending url encoded variables in the request
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // Access the onreadystatechange event for the XMLHttpRequest object
+    hr.onreadystatechange = function() {
+	    if(hr.readyState == 4 && hr.status == 200) {
+		    var return_data = hr.responseText;
+			document.getElementById("status").innerHTML = return_data;
+	    }
+    }
+    // Send the data to PHP now... and wait for response to update the status div
+    hr.send(vars); // Actually execute the request
+    document.getElementById("status").innerHTML = "processing...";
+}
+
+</script>
+
+</head>
+<body>
+
+        <!--<form name="ejemplo" action="arduino.php" method="POST"> -->
+	<div class="body">	
+		<h1>Acionamento de focos por Ethernet</h1>		
+		 <!-- POST - Método utilizado para enviar as informações para o socket criado no arquivo arduino.php -->		
+		<section class="pref-container">
+			<section class="preference">
+				<div>
+					<div class="caption">Foco escada</div>
+					<label for="foco">
+						<input id="foco" type="checkbox" onchange="foco_post();" type="checkbox" checked="checked" value= "111111">
+						<div class="toggle-button">
+							<div class="switch"></div>
+						</div>
+					</label>
+				</div>
+
+
+
+				<div>
+					<div class="caption">Luz do quarto</div>
+					<label for="light-porch" class="brightness fa">
+                                             <input type="range" name="vled1" min="0" max="1000" step="20" value="0" id="vl_led1" onchange="ajax_post();"/>
+					</label>
+				</div>
+
+                                <div id="status"></div>
+
+
+
+			</section>
+
+		</section>
+            
+
+ 
+
+ 
+ 	</div>
+
+
+
+
+
+
+</body>
+
+
+</html>
